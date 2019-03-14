@@ -1,8 +1,6 @@
 *~
 verilog/
-demo.blif
-demo.txt
-demo.bin
+*.blif
+*.bin
 *.hi
 *.o
-Demo
