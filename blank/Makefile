@@ -1,26 +1,32 @@
+# Project setup
+PROJ      = blinky
+DEVICE    = 1k
+FOOTPRINT = tq144
 
-upload: demo.bin
-	iceprog demo.bin
+FILES_HS  = $(find src/ -type f -name '*.hs')
+# FILES_V   = $(find verilog/ -type f -name '*.vs')
 
-test: Demo
-	./Demo
+upload: build/top.bin
+	iceprog build/top.bin
+
+test: build/Top
+	./build/Top
 
 clean:
-	@rm -rf verilog
-	@rm -f demo.blif demo.txt demo.bin
+	@rm -rf build
 
-Demo: Demo.hs
-	clash Demo.hs
+build/Top: build/Top.hs
+	clash build/Top.hs
 
-verilog/Main/blinker.v: Demo.hs
-	clash --verilog Demo.hs
+build/verilog/Main/blinker.v: Top.hs
+	clash --verilog Top.hs
 
-demo.blif: verilog/Main/blinker.v
-	(cd verilog/Main; yosys -p "synth_ice40 -blif ../../demo.blif" $$(ls *.v|grep -v testbench.v))
+top.blif: verilog/Main/blinker.v
+	(cd verilog/Main; yosys -p "synth_ice40 -blif ../../top.blif" $$(ls *.v|grep -v testbench.v))
 
-demo.txt: demo.blif
-	arachne-pnr -d 1k -p icestick.pcf demo.blif -o demo.txt
+top.txt: top.blif
+	arachne-pnr -d 1k -p icestick.pcf top.blif -o top.txt
 
-demo.bin: demo.txt
-	icepack demo.txt demo.bin
+top.bin: top.txt
+	icepack top.txt top.bin
 
