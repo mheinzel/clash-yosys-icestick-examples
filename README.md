@@ -1,32 +1,48 @@
 Haskell deployed using fully open source toolchain to iCE40
 ===========================================================
 
-This is a simple demo for compiling of [Haskell](http://www.haskell.org)
-code into FPGA configuration.
+This is a simple demo for compiling [Haskell](http://www.haskell.org)
+code into descriptions of digital circuits and flashing them on hardware.
+It is based on
+[mgajda/clash-yosys-demo](https://github.com/mgajda/clash-yosys-demo)
+for the README,
+[wd5gnr/icestick](https://github.com/wd5gnr/icestick)
+for the `icestick.pcf` file and
+[nesl/ice40_examples](https://github.com/nesl/ice40_examples)
+for a few nice examples I could port to Clash.
 
-[_Field Programmable Gate Arrays_](https://en.wikipedia.org/wiki/Field-programmable_gate_array) (FPGAs) are
-a cheap and fast tool for prototyping hardware descriptions that can be
-later used for creating chips.
+[_Field Programmable Gate Arrays_](https://en.wikipedia.org/wiki/Field-programmable_gate_array)
+(FPGAs) are a cheap and fast tool for prototyping hardware descriptions that
+can be later used for creating chips.
 
 [_Haskell_](http://www.haskell.org) is a lazy functional programming language,
 which lends itself readily to both very high level descriptions of software,
-and very low level descriptions of hardware, due its solid mathematical underpinnings.
+and very low level descriptions of hardware, due its solid mathematical
+underpinnings.
 
 This demo uses fully open source toolchain:
 
-  * [CλaSH](http://www.clash-lang.org/) for compiling Haskell into Verilog,
-  * [Yosys](http://www.clifford.at/yosys/) [Verilog](https://en.wikipedia.org/wiki/Verilog) compiler to compile Verilog code into `.blif` format,
-  * [Arachne Place-N-Route](https://github.com/cseed/arachne-pnr) to perform routing onto the _Lattice ICE40 H1K_ device,
-  * [IceStorm](http://www.clifford.at/icestorm/) toolchain in order to generate FPGA bitstream and upload it
-    into [Lattice IceStick](http://latticesemi.com/iCEstick) device.
+  * [CλaSH](http://www.clash-lang.org/)
+    for compiling Haskell into Verilog,
+  * [Yosys](http://www.clifford.at/yosys/)
+    to compile [Verilog](https://en.wikipedia.org/wiki/Verilog) code into the
+    `.blif` format,
+  * [Arachne Place-N-Route](https://github.com/cseed/arachne-pnr)
+    to perform routing onto the _Lattice ICE40 H1K_ device,
+  * [IceStorm](http://www.clifford.at/icestorm/) toolchain
+    in order to generate FPGA bitstream and upload it onto the
+    [Lattice IceStick](http://latticesemi.com/iCEstick) device.
 
-_This project used as a *project template* for your own experiments
-with Haskell and FPGAs._ In this case, please remove `README.md` file after cloning.
+This repository contains the following projects:
+  * `blank` - a project template you can copy to create something new
 
-This one uses a single counter to show a binary stopwatch with a range of 2⁵ seconds.
+Each project then consists of the following files:
+  * `src` - the Haskell code describing the circuit
+  * `icestick.pcf` - assignment of names to _Lattice iCE40 H1K_ pins on the [iCEStick](http://latticesemi.com/iCEstick) board.
 
 Installing toolchain:
 ---------------------
+
 1. First install the [IceStorm](http://www.clifford.at/icestorm/) toolchain:
     On the latest _Ubuntu_ you may install from the repository: 
     ```
@@ -38,8 +54,8 @@ Installing toolchain:
 
         ```bash
         git clone https://github.com/cliffordwolf/icestorm.git icestorm
-        make -j4	-DPREFIX=$HOME/icestorm
-        make		-DPREFIX=$HOME/icestorm install
+        make -j4 -DPREFIX=$HOME/icestorm
+        make     -DPREFIX=$HOME/icestorm install
         ```
 
         For Linux you also might want to enable write access through FTDI USB device:
@@ -49,7 +65,7 @@ Installing toolchain:
         ACTION=="add", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE:="666"
         EOF
         ```
-    
+
     * [Arachne PNR](https://github.com/cseed/arachne-pnr) tool:
 
         ```bash
@@ -58,7 +74,7 @@ Installing toolchain:
         make -j$(nproc) -DDEST_DIR=$HOME/icestorm -DICEBOX=$HOME/icestorm/share/icebox/
         make install
         ```
-        
+
     * Yosys Verilog compiler:
 
         ```bash
@@ -81,15 +97,6 @@ Installing toolchain:
         ```bash
         cabal install clash-ghc
         ```
-        
-Files in this repository:
-----------------
-
-* `Demo.hs` - contains Haskell code for the 32-second timer.
-
-* `icestick.pcf` - assigns names to _Lattice iCE40 H1K_ pins on [iCEStick](http://latticesemi.com/iCEstick) board.
-
-* `icoboard.pcf` - assigns names to _Lattice iCE40 H8K_ pins on [IcoBoard](http://www.icoboard.org).
 
 Compilation steps:
 ------------------
@@ -137,16 +144,3 @@ Or use `Makefile`:
 make test
 make upload
 ```
-
-Future plans:
--------------
-It would be nice to wrap Ice40 PLL configuration as a custom block:
-
-* For Verilog code see: [iCEStick PLLs](https://www.reddit.com/r/yosys/comments/3yrq6d/are_plls_supported_on_the_icestick_hw/)
-
-* Wrapping of custom blocks in CλaSH code is
-  [described in this documentation](http://hackage.haskell.org/package/clash-prelude-0.7.5/docs/CLaSH-Tutorial.html#g:13).
-
-* Unfortunately making it work requires some [change in the way CλaSH handles clock annotations](https://github.com/clash-lang/clash-compiler/issues/145).
-
-_Until then one needs to change Verilog code by themselves, asserting `1` for `system1000_rstn`_
