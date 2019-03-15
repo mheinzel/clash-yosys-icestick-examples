@@ -1,32 +1,29 @@
 # Project setup
-PROJ      = blinky
+PROJ      = blank
+BUILD     = ./build
 DEVICE    = 1k
 FOOTPRINT = tq144
 
-FILES_HS  = $(find src/ -type f -name '*.hs')
-# FILES_V   = $(find verilog/ -type f -name '*.vs')
+# Files
+FILES = top.v
 
-upload: build/top.bin
-	iceprog build/top.bin
+.PHONY: all clean burn
 
-test: build/Top
-	./build/Top
+all:
+	# if build folder doesn't exist, create it
+	mkdir -p $(BUILD)
+	# synthesize using Yosys
+	yosys -p "synth_ice40 -top top -blif $(BUILD)/$(PROJ).blif" $(FILES)
+	# Place and route using arachne
+	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ).asc -p pinmap.pcf $(BUILD)/$(PROJ).blif
+	# Convert to bitstream using IcePack
+	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
+
+burn:
+	iceprog $(BUILD)/$(PROJ).bin
+
+show:
+	yosys -p "show" $(FILES)
 
 clean:
-	@rm -rf build
-
-build/Top: build/Top.hs
-	clash build/Top.hs
-
-build/verilog/Main/blinker.v: Top.hs
-	clash --verilog Top.hs
-
-top.blif: verilog/Main/blinker.v
-	(cd verilog/Main; yosys -p "synth_ice40 -blif ../../top.blif" $$(ls *.v|grep -v testbench.v))
-
-top.txt: top.blif
-	arachne-pnr -d 1k -p icestick.pcf top.blif -o top.txt
-
-top.bin: top.txt
-	icepack top.txt top.bin
-
+	rm $(BUILD)/*
