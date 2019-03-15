@@ -5,26 +5,35 @@ DEVICE    = 1k
 FOOTPRINT = tq144
 PINMAP    = icestick.pcf
 
+# TODO make more general
+CLASH = stack exec --resolver lts-12.12 -- clash
+
 # Files
-FILES = top.v
+FILES = src/Top.hs
 
-.PHONY: all clean burn
+.PHONY: all clean verilog bitstream burn
 
-all:
+all: bitstream
+
+verilog:
 	# if build folder doesn't exist, create it
 	mkdir -p $(BUILD)
+	# TODO copy native verilog files over
+	$(CLASH) --verilog $(FILES) -outputdir $(BUILD)
+
+bitstream: verilog
 	# synthesize using Yosys
-	yosys -p "synth_ice40 -top top -blif $(BUILD)/$(PROJ).blif" $(FILES)
+	yosys -p "synth_ice40 -blif $(BUILD)/$(PROJ).blif" $$(find $(BUILD)/verilog/ -type f -iname '*.v' | grep -v testbench.v)
 	# Place and route using arachne
 	arachne-pnr -d $(DEVICE) -P $(FOOTPRINT) -o $(BUILD)/$(PROJ).asc -p $(PINMAP) $(BUILD)/$(PROJ).blif
 	# Convert to bitstream using IcePack
 	icepack $(BUILD)/$(PROJ).asc $(BUILD)/$(PROJ).bin
 
-burn:
+burn: bitstream
 	iceprog $(BUILD)/$(PROJ).bin
 
 show:
-	yosys -p "show" $(FILES)
+	yosys -p "show" $$(find $(BUILD)/verilog/ -type f -iname '*.v' | grep -v testbench.v)
 
 clean:
-	rm $(BUILD)/*
+	rm ./$(BUILD)/* -rf

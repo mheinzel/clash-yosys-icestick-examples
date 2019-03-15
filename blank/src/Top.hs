@@ -5,14 +5,14 @@
 {-# LANGUAGE ScopedTypeVariables        #-}
 {-# LANGUAGE BinaryLiterals             #-}
 {-# LANGUAGE RankNTypes #-}
-module Main where
+module Top where
 
 import Clash.Prelude
 import Control.Lens as Lens (Lens, Lens', over)
 
 {-# ANN topEntity
   (Synthesize
-    { t_name     = "blinker"
+    { t_name     = "blank"
     , t_inputs   =
         [ PortName "clk"
         , PortName "pmod1"
