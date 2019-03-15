@@ -1,0 +1,16 @@
+[ { "BlackBox" :
+    { "name" : "Top.button"
+    , "type" :
+"button
+  :: Clock domain source
+  -> Bit
+  -> Signal domain Bit"
+    , "templateD" :
+"button ~GENSYM[button_inst][1]
+  ( .clk    (~ARG[1])
+  , .pin_in (~ARG[2])
+  , .press  (~RESULT)
+  );"
+    }
+  }
+]
