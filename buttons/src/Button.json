@@ -1,5 +1,5 @@
 [ { "BlackBox" :
-    { "name" : "Top.button"
+    { "name" : "Button.button"
     , "type" :
 "button
   :: Clock domain source

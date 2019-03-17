@@ -1,4 +1,5 @@
 {-# LANGUAGE AllowAmbiguousTypes        #-}
+{-# LANGUAGE BangPatterns               #-}
 {-# LANGUAGE DataKinds                  #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -10,9 +11,12 @@
 module Button (button) where
 
 import Clash.Prelude
+import GHC.Stack (HasCallStack)
 
 button
-  :: Clock domain source
+  :: HasCallStack
+  => Clock domain source
   -> Bit
   -> Signal domain Bit
-button _ b = pure b
+button !_ !b = pure b
+{-# NOINLINE button #-}

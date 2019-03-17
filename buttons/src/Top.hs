@@ -1,4 +1,5 @@
 {-# LANGUAGE AllowAmbiguousTypes        #-}
+{-# LANGUAGE BangPatterns               #-}
 {-# LANGUAGE DataKinds                  #-}
 {-# LANGUAGE TypeFamilies               #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
@@ -9,6 +10,8 @@
 {-# LANGUAGE ViewPatterns               #-}
 {-# LANGUAGE TupleSections              #-}
 module Top where
+
+import Button
 
 import Clash.Prelude
 import Control.Lens (Iso', iso, over)
@@ -36,13 +39,6 @@ topEntity
   -> Signal System (Bit, Bit, Bit, Bit)
 topEntity clk button1 _ _ _ =
   (, low, low, low) <$> button clk button1
-
-button
-  :: Clock domain source
-  -> Bit
-  -> Signal domain Bit
-button _ b = pure b
-{-# NOINLINE button #-}
 
 main :: IO ()
 main = print "hello world"
