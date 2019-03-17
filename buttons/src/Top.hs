@@ -37,8 +37,12 @@ topEntity
   :: Clock System Source
   -> Bit -> Bit -> Bit -> Bit
   -> Signal System (Bit, Bit, Bit, Bit)
-topEntity clk button1 _ _ _ =
-  (, low, low, low) <$> button clk button1
+topEntity clk button1 button2 button3 button4 =
+  (,,,)
+    <$> button clk button1
+    <*> button clk button2
+    <*> button clk button3
+    <*> button clk button4
 
 main :: IO ()
 main = print "hello world"
