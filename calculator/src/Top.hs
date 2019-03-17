@@ -9,11 +9,15 @@
 {-# LANGUAGE RankNTypes                 #-}
 {-# LANGUAGE ViewPatterns               #-}
 {-# LANGUAGE NamedFieldPuns             #-}
+{-# LANGUAGE DeriveAnyClass             #-}
+{-# LANGUAGE DeriveGeneric              #-}
 module Top where
 
 import Button (button)
 
 import Clash.Prelude
+import Control.DeepSeq (NFData)
+import GHC.Generics (Generic)
 
 {-# ANN topEntity
   (Synthesize
@@ -42,9 +46,9 @@ topEntity clk pmod1 pmod2 pmod3 pmod4 =
     fmap fromOutput $
       calculator $
         toUpdates
-          (button clk pmod1)
-          (button clk pmod3)
-          (button clk pmod4)
+          (isRising 0 (button clk pmod1))
+          (isRising 0 (button clk pmod3))
+          (isRising 0 (button clk pmod4))
 
   where
     fromOutput o =
@@ -58,13 +62,13 @@ topEntity clk pmod1 pmod2 pmod3 pmod4 =
 data Update
   = Confirm
   | Push Bit
-  deriving (Show)
+  deriving (Show, Generic, NFData)
 
 toUpdates
   :: HiddenClockReset domain gated reset
-  => Signal domain Bit
-  -> Signal domain Bit
-  -> Signal domain Bit
+  => Signal domain Bool  -- ^ confirm
+  -> Signal domain Bool  -- ^ push 0
+  -> Signal domain Bool  -- ^ push 1
   -> Signal domain (Maybe Update)
 
 toUpdates
@@ -72,17 +76,17 @@ toUpdates
 
   where
     pick confirm push0 push1
-      | confirm == high = Just Confirm
-      | push0 == high   = Just (Push 0)
-      | push1 == high   = Just (Push 1)
-      | otherwise       = Nothing
+      | confirm   = Just Confirm
+      | push0     = Just (Push 0)
+      | push1     = Just (Push 1)
+      | otherwise = Nothing
 
 data Output
   = Output
       { number :: Unsigned 4
       , isResult :: Bit
       }
-  deriving (Show)
+  deriving (Show, Generic, NFData)
 
 calculator
   :: HiddenClockReset domain gated reset
