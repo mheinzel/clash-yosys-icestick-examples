@@ -43,12 +43,20 @@ topEntity
   -> Signal System (Bit, Bit, Bit, Bit, Bit)
 topEntity clk pmod1 pmod2 pmod3 pmod4 =
   withClockReset clk (unsafeToAsyncReset (pure False)) $
-    fmap fromOutput $
-      calculator $
-        toUpdates
-          (isRising 0 (button clk pmod1))
-          (isRising 0 (button clk pmod3))
-          (isRising 0 (button clk pmod4))
+    let
+      toUpdate confirm push0 push1
+        | confirm   = Just Confirm
+        | push0     = Just (Push 0)
+        | push1     = Just (Push 1)
+        | otherwise = Nothing
+
+      updates
+        = toUpdate
+            <$> isRising 0 (button clk pmod1)
+            <*> isRising 0 (button clk pmod3)
+            <*> isRising 0 (button clk pmod4)
+    in
+      fromOutput <$> calculator updates
 
   where
     fromOutput o =
@@ -63,23 +71,6 @@ data Update
   = Confirm
   | Push Bit
   deriving (Show, Generic, NFData)
-
-toUpdates
-  :: HiddenClockReset domain gated reset
-  => Signal domain Bool  -- ^ confirm
-  -> Signal domain Bool  -- ^ push 0
-  -> Signal domain Bool  -- ^ push 1
-  -> Signal domain (Maybe Update)
-
-toUpdates
-  = liftA3 pick
-
-  where
-    pick confirm push0 push1
-      | confirm   = Just Confirm
-      | push0     = Just (Push 0)
-      | push1     = Just (Push 1)
-      | otherwise = Nothing
 
 data Output
   = Output
