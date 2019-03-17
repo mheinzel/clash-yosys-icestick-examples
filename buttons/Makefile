@@ -34,8 +34,8 @@ bitstream: verilog
 burn: bitstream
 	iceprog $(BUILD)/$(PROJ).bin
 
-show:
-	yosys -p "show" $$(find $(BUILD)/verilog/ -type f -iname '*.v' | grep -v testbench.v)
+show: verilog
+	yosys -p "show" $(BUILD)/verilog/Top/$(PROJ)/$(PROJ).v
 
 clean:
 	rm ./$(BUILD)/* -rf
