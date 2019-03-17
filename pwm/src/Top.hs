@@ -48,8 +48,13 @@ topEntity clk _ _ _ =
       , low
       )
 
-    abs' = slice d7 d0 . over unpacked (abs @(Signed 9))
+    --    /\            /    \         /\  /\
+    --   /  \   signed /      \  abs  /  \/  \ unsigned
+    --  /    \   ===>     /\     ===>            ===>    /\  /\
+    -- /      \          /  \                           /  \/  \
+    abs' = slice d7 d0 . over (unpacked @(Signed 9)) abs
 
+-- | pulse width modulation, can be used to gradually control LED brightness
 pwm :: BitVector m -> BitVector m -> Bit
 pwm treshold cnt = boolToBit $ cnt > treshold
 
