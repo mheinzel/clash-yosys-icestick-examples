@@ -15,7 +15,7 @@ import Control.Lens (Iso', iso, over)
 
 {-# ANN topEntity
   (Synthesize
-    { t_name     = "pwm"
+    { t_name     = "buttons"
     , t_inputs   =
         [ PortName "clk"
         , PortName "pmod1"
