@@ -35,6 +35,9 @@ This demo uses fully open source toolchain:
 
 This repository contains the following projects:
   * `blank` - a project template you can copy to create something new
+  * `blinky` - a simple counter that shows its state on the 5 board LEDs
+  * `pwm` - an example of gradually changing LED brightness using pulse width modulation
+  * `buttons` - control the 4 green LEDs using buttons connected to PMOD pins 1-4
 
 Each project then consists of the following files:
   * `src` - the Haskell code describing the circuit
