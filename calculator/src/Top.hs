@@ -137,7 +137,12 @@ update :: Update -> State -> State
 update update state
   = case update of
       Confirm ->
-        state {step = nextStep (step state)}
+        case step state of
+          ShowingResult ->
+            initialState
+          _ ->
+            state {step = nextStep (step state)}
+
       Push b  ->
         case step state of
           EnteringFirstNumber ->
