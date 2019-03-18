@@ -3,9 +3,11 @@
   {
     haskell = super.haskell // {
       packages = super.haskell.packages // {
-        ghc844 = super.haskell.packages.ghc844.extend (
-          newGhc844Packages: oldGhc844Packages: rec {
-            singletons = newGhc844Packages.callPackage ./nix/overrides/singletons-2.4.1.nix {};
+        ghc843 = super.haskell.packages.ghc843.extend (
+          newGhc843Packages: oldGhc843Packages: rec {
+            clash-prelude =
+              let oldPkg = oldGhc843Packages.clash-prelude;
+               in self.haskell.lib.dontCheck oldPkg;
           });
       };
     };

@@ -5,8 +5,7 @@ DEVICE    = 1k
 FOOTPRINT = tq144
 PINMAP    = icestick.pcf
 
-# TODO make more general
-CLASH = stack exec --resolver lts-12.12 -- clash -isrc
+CLASH = clash -isrc
 
 # Files
 FILES_HS = src/Top.hs
