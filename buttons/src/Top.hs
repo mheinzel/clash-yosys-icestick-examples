@@ -31,6 +31,7 @@ import Control.Lens (Iso', iso, over)
         , PortName "led2"
         , PortName "led3"
         , PortName "led4"
+        , PortName "led5"
         ]
     }) #-}
 topEntity

@@ -30,10 +30,10 @@ import Control.Lens as Lens (Lens, Lens', over)
     }) #-}
 topEntity
   :: Clock System Source
-  -> Bit -> Bit -> Bit
-  -> Signal System (Bit, Bit, Bit, Bit, Bit)
-topEntity clk _ _ _ =
-  pure (high, high, high, high, low)
+  -> Bit -> Bit -> Bit -> Bit
+  -> (Bit, Bit, Bit, Bit, Bit)
+topEntity clk p1 p2 p3 p4 =
+  (p1, p2, p3, p4, high)
 
 main :: IO ()
 main = print "hello world"
