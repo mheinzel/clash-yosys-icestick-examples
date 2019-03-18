@@ -15,11 +15,11 @@ FILES = src/Top.hs
 
 all: bitstream
 
-verilog:
+verilog: $(FILES)
 	# if build folder doesn't exist, create it
 	mkdir -p $(BUILD)
 	# TODO copy native verilog files over
-	$(CLASH) --verilog $(FILES) -outputdir $(BUILD)
+	$(CLASH) -v --verilog $(FILES) -outputdir $(BUILD)
 
 bitstream: verilog
 	# synthesize using Yosys
@@ -32,7 +32,7 @@ bitstream: verilog
 burn: bitstream
 	iceprog $(BUILD)/$(PROJ).bin
 
-show:
+show: verilog
 	yosys -p "show" $$(find $(BUILD)/verilog/ -type f -iname '*.v' | grep -v testbench.v)
 
 clean:

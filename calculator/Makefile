@@ -21,7 +21,7 @@ verilog: $(FILES_HS) $(FILES_V)
 	mkdir -p $(BUILD)
 	mkdir -p $(BUILD)/verilog
 	if [ -e verilog ]; then cp verilog/* -r $(BUILD)/verilog/; fi
-	$(CLASH) --verilog $(FILES_HS) -outputdir $(BUILD)
+	$(CLASH) -v --verilog $(FILES_HS) -outputdir $(BUILD)
 
 bitstream: verilog
 	# synthesize using Yosys
