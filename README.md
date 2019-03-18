@@ -46,9 +46,11 @@ Each project then consists of the following files:
 Installing toolchain:
 ---------------------
 With nix (recommended):
-```
-nix-shell
-```
+1. Install [nix](https://nixos.org/nix/)
+2. Drop into a
+    ```
+    nix-shell
+    ```
 
 Or to install the dependencies manually:
 1. First install the [IceStorm](http://www.clifford.at/icestorm/) toolchain:
