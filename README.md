@@ -146,7 +146,8 @@ While there will be Makefile, you might want to look through the build process s
     ```
     iceprog demo.bin
     ```
-    NOTE: If you forgot to add the relevant udev rule, you might need to use `sudo` here.
+    NOTE: If you forgot to add the [relevant udev rule](https://stackoverflow.com/questions/36633819/),
+    you might need to use `sudo` here.
 
 Or use `Makefile`:
 
