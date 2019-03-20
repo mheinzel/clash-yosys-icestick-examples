@@ -52,7 +52,7 @@ topEntity clk pmod1 pmod2 pmod3 pmod4 =
 
       updates
         = toUpdate
-            <$> isRising 0 (button clk pmod1)
+            <$> isRising 0 (button clk pmod2)
             <*> isRising 0 (button clk pmod3)
             <*> isRising 0 (button clk pmod4)
     in
