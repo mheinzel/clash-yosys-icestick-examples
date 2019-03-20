@@ -8,7 +8,6 @@
 module Top where
 
 import Clash.Prelude
-import Control.Lens as Lens (Lens, Lens', over)
 
 {-# ANN topEntity
   (Synthesize
@@ -32,7 +31,7 @@ topEntity
   :: Clock System Source
   -> Bit -> Bit -> Bit -> Bit
   -> (Bit, Bit, Bit, Bit, Bit)
-topEntity clk p1 p2 p3 p4 =
+topEntity _clk p1 p2 p3 p4 =
   (p1, p2, p3, p4, high)
 
 main :: IO ()

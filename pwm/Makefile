@@ -5,10 +5,9 @@ DEVICE    = 1k
 FOOTPRINT = tq144
 PINMAP    = icestick.pcf
 
-# TODO make more general
-CLASH = stack exec --resolver lts-12.12 -- clash
+# change this if not using Stack
+CLASH = stack exec --resolver lts-12.12 -- clash -isrc -Wall -Wno-unticked-promoted-constructors -Wno-type-defaults
 
-# Files
 FILES = src/Top.hs
 
 .PHONY: all clean verilog bitstream burn

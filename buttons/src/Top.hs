@@ -14,7 +14,6 @@ module Top where
 import Button
 
 import Clash.Prelude
-import Control.Lens (Iso', iso, over)
 
 {-# ANN topEntity
   (Synthesize

@@ -41,7 +41,7 @@ topEntity
   :: Clock System Source
   -> Bit -> Bit -> Bit -> Bit
   -> Signal System (Bit, Bit, Bit, Bit, Bit)
-topEntity clk pmod1 pmod2 pmod3 pmod4 =
+topEntity clk _pmod1 pmod2 pmod3 pmod4 =
   withClockReset clk (unsafeToAsyncReset (pure False)) $
     let
       toUpdate confirm push0 push1
@@ -137,8 +137,8 @@ view State{currentStep, firstNumber, secondNumber}
           _ -> low
 
 update :: Update -> State -> State
-update update state
-  = case update of
+update u state
+  = case u of
       Confirm ->
         case currentStep state of
           ShowingResult ->

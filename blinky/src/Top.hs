@@ -8,7 +8,6 @@
 module Top where
 
 import Clash.Prelude
-import Control.Lens as Lens (Lens, Lens', over)
 
 {-# ANN topEntity
   (Synthesize
@@ -40,11 +39,11 @@ topEntity clk _ _ _ =
     counter = register (0 :: Unsigned 32) ((+1) <$> counter)
 
     leds c =
-      ( c!24
-      , c!23
-      , c!22
-      , c!21
-      , c!20
+      ( c ! 24
+      , c ! 23
+      , c ! 22
+      , c ! 21
+      , c ! 20
       )
 
 main :: IO ()
