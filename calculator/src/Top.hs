@@ -60,10 +60,10 @@ topEntity clk pmod1 pmod2 pmod3 pmod4 =
 
   where
     fromOutput o =
-      ( number o ! 0
-      , number o ! 1
-      , number o ! 2
-      , number o ! 3
+      ( displayNumber o ! 0
+      , displayNumber o ! 1
+      , displayNumber o ! 2
+      , displayNumber o ! 3
       , isResult o
       )
 
@@ -74,7 +74,7 @@ data Update
 
 data Output
   = Output
-      { number :: Unsigned 4
+      { displayNumber :: Unsigned 4
       , isResult :: Bit
       }
   deriving (Show, Generic, NFData)
@@ -85,16 +85,19 @@ calculator
   -> Signal domain Output
 
 calculator =
-  moore (flip (maybe id update)) view initialState
+  moore updateMaybe view initialState
 
-type Number
-  = Unsigned 4
+  where
+    updateMaybe state mU
+      = case mU of
+          Nothing -> state
+          Just u  -> update u state
 
 data State
   = State
-      { step :: Step
-      , firstNumber :: Number
-      , secondNumber :: Number
+      { currentStep :: Step
+      , firstNumber :: Unsigned 4
+      , secondNumber :: Unsigned 4
       }
   deriving (Show)
 
@@ -112,24 +115,24 @@ nextStep ShowingResult = EnteringFirstNumber
 initialState :: State
 initialState
   = State
-      { step = EnteringFirstNumber
+      { currentStep = EnteringFirstNumber
       , firstNumber = 0
       , secondNumber = 0
       }
 
 view :: State -> Output
-view State{step, firstNumber, secondNumber}
-  = Output {number, isResult}
+view State{currentStep, firstNumber, secondNumber}
+  = Output {displayNumber, isResult}
 
   where
-    number
-      = case step of
+    displayNumber
+      = case currentStep of
           EnteringFirstNumber -> firstNumber
           EnteringSecondNumber -> secondNumber
           ShowingResult -> firstNumber + secondNumber
 
     isResult
-      = case step of
+      = case currentStep of
           ShowingResult -> high
           _ -> low
 
@@ -137,14 +140,14 @@ update :: Update -> State -> State
 update update state
   = case update of
       Confirm ->
-        case step state of
+        case currentStep state of
           ShowingResult ->
             initialState
           _ ->
-            state {step = nextStep (step state)}
+            state {currentStep = nextStep (currentStep state)}
 
       Push b  ->
-        case step state of
+        case currentStep state of
           EnteringFirstNumber ->
             state {firstNumber = push b (firstNumber state)}
           EnteringSecondNumber ->
