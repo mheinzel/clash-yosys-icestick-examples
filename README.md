@@ -1,5 +1,5 @@
-From Haskell to Hardware using Clash, Yosys and IceStorm
-========================================================
+clash-yosys-icestick-examples
+=============================
 
 This is a simple demo for compiling [Haskell](http://www.haskell.org)
 code into descriptions of digital circuits and flashing them on hardware.
@@ -25,8 +25,8 @@ This demo uses a fully open source toolchain:
     [Lattice IceStick](http://latticesemi.com/iCEstick) device.
 
 
-Installing Clash:
------------------
+Installing Clash
+----------------
 
 I had issues setting up a full Nix-based installation, but ended up using Stack:
 
@@ -38,8 +38,8 @@ Alternatively, you can use Cabal to follow the [official installation instructio
 This, however, will interfere with your system level GHC installation.
 
 
-Installing the IceStorm toolchain:
-----------------------------------
+Installing the IceStorm toolchain
+---------------------------------
 
 ### Nix
 
@@ -70,8 +70,8 @@ sudo make install -j4 -C yosys
 Follow <http://www.clifford.at/icestorm/notes_osx.html>.
 
 
-Setting up rules for the USB device (Linux):
---------------------------------------------
+Setting up rules for the USB device (Linux)
+-------------------------------------------
 
 For Linux you also might want to enable write access through FTDI USB device.
 
@@ -81,26 +81,28 @@ Create the file `/etc/udev/rules.d/53-lattice-ftdi.rules` with the content:
 ACTION=="add", ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE:="666"
 ```
 
+Does it work?
+-------------
 
-Test that everything works:
----------------------------
-
-There should be no errors when you do:
+After following the steps above, there should be no errors when you do:
 
 ```bash
 cd blank
 make
 ```
 
+This will build a bitstream containing a very simple circuit,
+ready to be burned onto the board.
+If you have an IceStick FPGA plugged in, you should also be able to program it
+using `make burn`.
 
 Play around!
 ------------
 
 This repository contains the following projects:
+
   * `blank` - a project template you can copy to create something new
   * `blinky` - a simple counter that shows its state on the 5 board LEDs
   * `pwm` - an example of gradually changing LED brightness using pulse width modulation
   * `buttons` - control the 4 green LEDs using buttons connected to PMOD pins 1-4
   * `calculator` - a simple state machine using buttons and LEDs
-
-Each of those can be compiled into a bitstream using `make` and burned onto the device using `make burn`.
