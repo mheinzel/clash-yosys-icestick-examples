@@ -54,6 +54,18 @@ Use the Arch User Repository to install the packages:
 
 ### From Source
 
+We first need to install some dependencies:
+* Ubuntu:
+  ```
+  sudo apt-get install build-essential clang bison flex libreadline-dev gawk tcl-dev libffi-dev git mercurial graphviz xdot pkg-config python python3 libftdi-dev qt5-default python3-dev libboost-all-dev cmake
+  ```
+* Fedora:
+  ```
+  sudo dnf install make automake gcc gcc-c++ kernel-devel clang bison flex readline-devel gawk tcl-devel libffi-devel git mercurial graphviz python-xdot pkgconfig python python3 libftdi-devel qt5-devel python3-devel
+  ```
+* Others:
+  There should be similar packages on other package managers.
+
 ```bash
 git clone https://github.com/cliffordwolf/icestorm.git icestorm
 sudo make install -j4 -C icestorm
