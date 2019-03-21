@@ -35,7 +35,7 @@ I had issues setting up a full Nix-based installation, but ended up using Stack:
 
 * Install Stack following the [instructions](https://docs.haskellstack.org/en/stable/README/#how-to-install).
 * Install Clash:
-  `stack install --resolver lts-12.12 clash-ghc`
+  `stack install --resolver lts-12.26 clash-ghc`
 
 Alternatively, you can use Cabal to follow the [official installation instructions](https://clash-lang.org/downloads).
 This, however, will interfere with your system level GHC installation.

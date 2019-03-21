@@ -6,7 +6,7 @@ FOOTPRINT = tq144
 PINMAP    = icestick.pcf
 
 # change this if not using Stack
-CLASH = stack exec --resolver lts-12.12 -- clash -isrc -isrc -Wall -Wno-unticked-promoted-constructors -Wno-type-defaults
+CLASH = stack exec --resolver lts-12.26 -- clash -isrc -isrc -Wall -Wno-unticked-promoted-constructors -Wno-type-defaults
 
 FILES_HS = src/Top.hs
 FILES_V  = $(shell find verilog -type f -name "*.v")
