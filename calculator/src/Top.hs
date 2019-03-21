@@ -55,17 +55,16 @@ topEntity clk _pmod1 pmod2 pmod3 pmod4 =
             <$> isRising 0 (button clk pmod2)
             <*> isRising 0 (button clk pmod3)
             <*> isRising 0 (button clk pmod4)
+
+      fromOutput Output{displayNumber, isResult}
+        = ( displayNumber ! 0
+          , displayNumber ! 1
+          , displayNumber ! 2
+          , displayNumber ! 3
+          , isResult
+          )
     in
       fromOutput <$> calculator updates
-
-  where
-    fromOutput o =
-      ( displayNumber o ! 0
-      , displayNumber o ! 1
-      , displayNumber o ! 2
-      , displayNumber o ! 3
-      , isResult o
-      )
 
 data Update
   = Confirm
