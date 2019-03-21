@@ -24,6 +24,9 @@ This demo uses a fully open source toolchain:
     to generate an FPGA bitstream and upload it onto the
     [Lattice IceStick](http://latticesemi.com/iCEstick) device.
 
+I created it for a Workshop called **Writing Hardware in Haskell**.
+You can find the slides in another [repository](https://github.com/mheinzel/writing-hardware-in-haskell).
+
 
 Installing Clash
 ----------------
