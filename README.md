@@ -66,23 +66,21 @@ We first need to install some dependencies:
   ```
   sudo dnf install make automake gcc gcc-c++ kernel-devel clang bison flex readline-devel gawk tcl-devel libffi-devel git mercurial graphviz python-xdot pkgconfig python python3 libftdi-devel qt5-devel python3-devel
   ```
+* OSX:
+  ```
+  brew install python3 libftdi0 libffi autoconf bison gawk gnu-sed graphviz xdot mercurial
+  ```
 * Others:
   There should be similar packages on other package managers.
 
-```bash
-git clone https://github.com/cliffordwolf/icestorm.git icestorm
-sudo make install -j4 -C icestorm
-
-git clone https://github.com/cseed/arachne-pnr.git arachne-pnr
-sudo make install -j4 -C arachne-pnr
-
-git clone https://github.com/cliffordwolf/yosys.git yosys
-sudo make install -j4 -C yosys
+Then have a look at and run
+```
+./build-icestorm-arachne-yosys.sh
 ```
 
-### OSX
-
-Follow <http://www.clifford.at/icestorm/notes_osx.html>.
+The OSX support is based on <https://github.com/ddm/icetools>.
+Solutions for some common errors are explained here: <http://www.clifford.at/icestorm/notes_osx.html>.
+I can't verify it works, so let me know if you run into any issues.
 
 
 Setting up rules for the USB device (Linux)
